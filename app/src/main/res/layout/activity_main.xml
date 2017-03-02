@@ -17,6 +17,6 @@
         android:text="@string/txtBoton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:onClick="MostrarDispositivos" />
+        android:onClick="mostrarDispositivos" />
 
 </RelativeLayout>
