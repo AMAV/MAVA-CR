@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             Context context = getApplicationContext();
             CharSequence text = "tu movil no soporta bluetooth";
-            int duration = Toast.LENGTH_SHORT;
+            int duration = Toast.LENGTH_LONG;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 Context context = getApplicationContext();
                 CharSequence text = "bluetooth no activado";
-                int duration = Toast.LENGTH_SHORT;
+                int duration = Toast.LENGTH_LONG;
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
