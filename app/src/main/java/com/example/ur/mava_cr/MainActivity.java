@@ -9,8 +9,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.TwoLineListItem;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         lstDisp = (ListView)findViewById(R.id.listDispositivos);
         registrarEventosBluetooth();
+        lstDisp.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                try{
+                    TwoLineListItem tv = (TwoLineListItem) adapter.getItemAtPosition(position);
+                    Toast.makeText(getBaseContext(), tv.getText2().getText(), Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+                    Toast.makeText(getBaseContext(), "Error al castear el objeto a textview", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+        });
     }
     //Suscripción de BroadcastReciver a eventos de bluetooth
     private void registrarEventosBluetooth()
