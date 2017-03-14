@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MAVA-CR</string>
     <string name="txtBoton">Conectar</string>
+    <string name="txtGo">GO</string>
 </resources>

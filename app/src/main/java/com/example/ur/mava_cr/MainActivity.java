@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<BluetoothDevice> arrayDevices;
     private BluetoothDeviceArrayAdapter arrayAdapter;
     private ListView lstDisp;
+    private OutputStream outSt = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,20 +43,39 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), bd.getAddress(), Toast.LENGTH_SHORT).show();
                     BluetoothSocket socket = bd.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
                     socket.connect();
+                    outSt = socket.getOutputStream();
+
                 } catch (IOException e) {
                     Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception ex) {
                     Toast.makeText(getBaseContext(), "Error al castear el objeto a textview", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
-
-
-
-
         });
+        Button conectar = (Button)findViewById(R.id.button3);
+        conectar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getActionMasked() == MotionEvent.ACTION_DOWN){
+                    try{
+                        outSt.write("b".getBytes());
+                    }catch (IOException ex){
+
+                    }
+                }
+                else if(event.getActionMasked() == MotionEvent.ACTION_UP){
+                    try{
+                        outSt.write("f".getBytes());
+                    }catch (IOException ex){
+
+                    }
+                }
+                return true;
+            }
+        });
+
     }
+
     //Suscripción de BroadcastReciver a eventos de bluetooth
     private void registrarEventosBluetooth()
     {
@@ -99,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void mostrarDispositivos (View view) {
-
+        Button conectar = (Button)findViewById(R.id.button);
+        conectar.setVisibility(View.INVISIBLE);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter != null) {
             // Device does not support Bluetooth
