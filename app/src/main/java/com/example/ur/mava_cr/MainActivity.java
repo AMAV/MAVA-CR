@@ -2,24 +2,19 @@ package com.example.ur.mava_cr;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_ENABLE_BT = 1;
@@ -27,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<BluetoothDevice> arrayDevices;
     private BluetoothDeviceArrayAdapter arrayAdapter;
     private ListView lstDisp;
-    private OutputStream outSt = null;
+    private BluetoothDevice dispositivo = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,42 +33,26 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                try {
-                    BluetoothDevice bd = (BluetoothDevice) adapter.getItemAtPosition(position);
-                    Toast.makeText(getBaseContext(), bd.getAddress(), Toast.LENGTH_SHORT).show();
-                    BluetoothSocket socket = bd.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
-                    socket.connect();
-                    outSt = socket.getOutputStream();
+                //try {
+                    dispositivo = (BluetoothDevice) adapter.getItemAtPosition(position);
+                    lanzarActivity();
+                    //BluetoothSocket socket = bd.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+                    //socket.connect();
 
-                } catch (IOException e) {
-                    Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                } catch (Exception ex) {
-                    Toast.makeText(getBaseContext(), "Error al castear el objeto a textview", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        Button conectar = (Button)findViewById(R.id.button3);
-        conectar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getActionMasked() == MotionEvent.ACTION_DOWN){
-                    try{
-                        outSt.write("b".getBytes());
-                    }catch (IOException ex){
-
-                    }
-                }
-                else if(event.getActionMasked() == MotionEvent.ACTION_UP){
-                    try{
-                        outSt.write("f".getBytes());
-                    }catch (IOException ex){
-
-                    }
-                }
-                return true;
+                //} catch (IOException e) {
+                   // Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                //} catch (Exception ex) {
+                    //Toast.makeText(getBaseContext(), "Error al castear el objeto a textview", Toast.LENGTH_SHORT).show();
+                //}
             }
         });
 
+
+    }
+    private void lanzarActivity(){
+        Intent controler = new Intent(this,JoystickControler.class);
+        controler.putExtra("dispositivo", dispositivo);
+        startActivity(controler);
     }
 
     //Suscripción de BroadcastReciver a eventos de bluetooth
