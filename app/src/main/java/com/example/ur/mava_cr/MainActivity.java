@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 //try {
+                    if(mBluetoothAdapter.isDiscovering())
+                        mBluetoothAdapter.cancelDiscovery();
+
                     dispositivo = (BluetoothDevice) adapter.getItemAtPosition(position);
                     lanzarActivity();
                     //BluetoothSocket socket = bd.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
@@ -83,15 +86,16 @@ public class MainActivity extends AppCompatActivity {
                 BluetoothDevice dispositivo = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 arrayDevices.add(dispositivo);
                 //String descripcionDispositivo = dispositivo.getName() + " [" + dispositivo.getAddress() + "]";
+                arrayAdapter = new BluetoothDeviceArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_2, arrayDevices);
+                lstDisp.setAdapter(arrayAdapter);
+
 
             }
 
             // Codigo que se ejecutara cuando el Bluetooth finalice la busqueda de dispositivos.
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(intent.getAction()))
             {
-                // Instanciamos un nuevo adapter para el ListView
-                arrayAdapter = new BluetoothDeviceArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_2, arrayDevices);
-                lstDisp.setAdapter(arrayAdapter);
+
                 Toast.makeText(getBaseContext(), "Fin de la búsqueda", Toast.LENGTH_SHORT).show();
             }
         }
@@ -121,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
             // Iniciamos la busqueda de dispositivos y mostramos el mensaje de que el proceso ha comenzado
             if(mBluetoothAdapter.startDiscovery())
                 Toast.makeText(this, "Iniciando búsqueda de dispositivos bluetooth", Toast.LENGTH_SHORT).show();
-            else
+            else {
                 Toast.makeText(this, "Error al iniciar búsqueda de dispositivos bluetooth", Toast.LENGTH_SHORT).show();
+                conectar.setVisibility(View.VISIBLE);
+            }
         }
         else {
             Context context = getApplicationContext();
