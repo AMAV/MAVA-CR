@@ -2,4 +2,7 @@
     <string name="app_name">MAVA-CR</string>
     <string name="txtBoton">Conectar</string>
     <string name="txtGo">GO</string>
+    <string name="txtLow">Low</string>
+    <string name="txtMedium">Medium</string>
+    <string name="txtHight">Hight</string>
 </resources>

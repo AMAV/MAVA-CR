@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void lanzarActivity(){
-        Intent controler = new Intent(this,JoystickControler.class);
+        Intent controler = new Intent(this,Controler.class);
         controler.putExtra("dispositivo", dispositivo);
         startActivity(controler);
     }
