@@ -7,29 +7,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
 public class Controler extends AppCompatActivity  {
     private BluetoothDevice dispositivo;
     private OutputStream outSt;
+    private InputStream inSt;
     private long previusTime;
     ImageButton ibtnForward;
     ImageButton ibtnBack;
     ImageButton ibtnRight;
     ImageButton ibtnLeft;
     WebView wv;
-    //private static final Uri uri = Uri.parse("http://192.168.43.235:8080/video.mp4");
-    //private static final Uri uri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4");
+    EditText et;
+    Switch pa;
+    ImageView btnBLue;
+    BluetoothSocket socket = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controler);
+        pa = (Switch) findViewById(R.id.switch1);
 
         ibtnForward = (ImageButton) findViewById(R.id.ibtnForward);
         ibtnBack = (ImageButton) findViewById(R.id.ibtnBack);
@@ -37,11 +46,16 @@ public class Controler extends AppCompatActivity  {
         ibtnLeft = (ImageButton) findViewById(R.id.ibtnLeft);
         //Asignar evento de pulsación del boton hacia delante
         wv = (WebView) findViewById(R.id.Video);
+        wv.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onReceivedError(WebView view, int errorCod,String description, String failingUrl) {
+                view.setVisibility(View.INVISIBLE);
+            }
+        });
         wv.loadUrl("http://192.168.43.235:8080/browserfs.html");
-            //vv.setMediaController(new MediaController(this));
-            //vv.requestFocus();
-            //vv.setVideoURI(uri);
-            //vv.start();
+
+        btnBLue = (ImageView) findViewById(R.id.imageView3);
+
 
         ibtnForward.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -135,7 +149,7 @@ public class Controler extends AppCompatActivity  {
 
         dispositivo = (BluetoothDevice)getIntent().getExtras().getParcelable("dispositivo");
        // Button conectar = (Button)findViewById(R.id.button3);
-        BluetoothSocket socket = null;
+
         outSt = null;
         try{
             socket = dispositivo.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
@@ -144,9 +158,41 @@ public class Controler extends AppCompatActivity  {
 
 
 
+
         }catch (IOException ex){
             //Hacer algo
         }
+
+
+    }
+    public void reconectar (View view){
+        if(socket != null){
+            try{
+                socket.connect();
+                outSt = socket.getOutputStream();
+            }catch(IOException ex){
+
+            }
+        }else{
+//            dispositivo = (BluetoothDevice)getIntent().getExtras().getParcelable("dispositivo");
+            try{
+                socket = dispositivo.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+            }catch (IOException e){
+                Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            try{
+
+                socket.connect();
+                outSt = socket.getOutputStream();
+            }catch(IOException ex2){
+                Toast.makeText(getBaseContext(), "Fallo al reconectar", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
+
 
     }
     public void moverCoche(String movimiento){
@@ -205,7 +251,23 @@ public class Controler extends AppCompatActivity  {
         }
     }
 
+    public void pilotoAutomatico(View view){
+        if(pa.isChecked()){
+            try{
+                outSt.write("p".getBytes());
+            }catch (Exception e){
+                Toast.makeText(getBaseContext(), "Fallo", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            try{
+                outSt.write("s".getBytes());
+            }catch (Exception e){
+                Toast.makeText(getBaseContext(), "Fallo", Toast.LENGTH_SHORT).show();
+            }
+        }
 
+    }
 
 
 

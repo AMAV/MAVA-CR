@@ -15,25 +15,22 @@
         android:id="@+id/ibtnForward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ibtnRight"
-        android:layout_alignLeft="@+id/ibtnBack"
-        android:layout_alignStart="@+id/ibtnBack"
         android:adjustViewBounds="false"
         android:minHeight="0dp"
-        app:srcCompat="@mipmap/arrowforward" />
+        app:srcCompat="@mipmap/arrowforward"
+        android:layout_above="@+id/ibtnRight"
+        android:layout_toLeftOf="@+id/ibtnRight"
+        android:layout_toStartOf="@+id/ibtnRight" />
 
     <ImageButton
         android:id="@+id/ibtnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="77dp"
-        android:layout_marginStart="77dp"
         app:srcCompat="@mipmap/arrowback"
-        tools:minHeight="43dp" />
+        tools:minHeight="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_alignEnd="@+id/switch1" />
 
     <ImageButton
         android:id="@+id/ibtnRight"
@@ -58,7 +55,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/ibtnRight" />
+        android:layout_toEndOf="@+id/ibtnRight" >
+
+    </WebView>
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:checked="false"
+        android:onClick="pilotoAutomatico"
+        android:text="Piloto Automatico"
+        android:textOff="Manual"
+        android:textOn="Activado" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ibtnBack"
+        android:layout_below="@+id/ibtnForward"
+        android:layout_toEndOf="@+id/ibtnLeft"
+        android:layout_toLeftOf="@+id/ibtnRight"
+        android:layout_toRightOf="@+id/ibtnLeft"
+        android:onClick="reconectar"
+        app:srcCompat="@mipmap/botonconectarxp" />
 
 </RelativeLayout>
 

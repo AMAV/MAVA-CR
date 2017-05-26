@@ -5,4 +5,5 @@
     <string name="txtLow">Low</string>
     <string name="txtMedium">Medium</string>
     <string name="txtHight">Hight</string>
+    <string name="dist">Distancia: </string>
 </resources>

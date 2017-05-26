@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void mostrarDispositivos (View view) {
-        Button conectar = (Button)findViewById(R.id.button);
-        conectar.setVisibility(View.INVISIBLE);
+        ImageView btnBlue = (ImageView) findViewById(R.id.imageView2);
+        btnBlue.setVisibility(View.INVISIBLE);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter != null) {
             // Device does not support Bluetooth
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Iniciando búsqueda de dispositivos bluetooth", Toast.LENGTH_SHORT).show();
             else {
                 Toast.makeText(this, "Error al iniciar búsqueda de dispositivos bluetooth", Toast.LENGTH_SHORT).show();
-                conectar.setVisibility(View.VISIBLE);
+                btnBlue.setVisibility(View.VISIBLE);
             }
         }
         else {
